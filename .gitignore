@@ -1,0 +1,13 @@
+.vs/
+
+Hospital.API/obj/*
+Hospital.API/bin/*
+
+Hospital.Application/bin/*
+Hospital.Application/obj/*
+
+Hospital.Infrastructure/bin/*
+Hospital.Infrastructure/obj/*
+
+Hospital.Domain/bin/*
+Hospital.Domain/obj/*
