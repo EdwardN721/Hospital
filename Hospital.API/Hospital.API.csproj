@@ -8,6 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Hospital.Application/Hospital.Application.csproj" />
+    <ProjectReference Include="../Hospital.Domain/Hospital.Domain.csproj" />
+    <ProjectReference Include="../Hospital.Infrastructure/Hospital.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
