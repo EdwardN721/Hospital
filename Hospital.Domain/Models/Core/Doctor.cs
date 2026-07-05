@@ -4,6 +4,7 @@ namespace Hospital.Domain.Models.Core;
 
 public class Doctor : Person
 {
+    public Guid DoctorId { get; set; }
     public Guid SpecialtyId { get; set; }
     public string MedicalLicense { get; set; } = null!;
     
