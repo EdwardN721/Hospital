@@ -8,8 +8,10 @@ public class FloorConfiguration : IEntityTypeConfiguration<Floor>
 {
     public void Configure(EntityTypeBuilder<Floor> builder)
     {
-        builder.ToTable("Floor", "clinical");
+        builder.ToTable("floors", "clinical");
 
-        builder.Property(p => p.FloorId).HasDefaultValueSql("gen_random_uuid()");
+        builder.HasKey(f => f.FloorId);
+        builder.Property(f => f.FloorId).HasDefaultValueSql("gen_random_uuid()");
+        builder.Property(f => f.Name).HasMaxLength(50).IsRequired();
     }
 }

@@ -1,3 +1,4 @@
+using Hospital.Domain.Interfaces;
 using Hospital.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -6,6 +7,14 @@ namespace Hospital.Infrastructure.Interceptors;
 
 public class AuditInterceptor : SaveChangesInterceptor
 {
+    private readonly ICurrentUserService _currentUserService;
+
+    public AuditInterceptor(ICurrentUserService currentUserService)
+    {
+        _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+    }
+
+
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData, 
         InterceptionResult<int> result,
@@ -33,9 +42,10 @@ public class AuditInterceptor : SaveChangesInterceptor
 
     #region MetodosPrivados
 
-    private static void UpdateAuditEntities(DbContext context)
+    private void UpdateAuditEntities(DbContext context)
     {
         DateTimeOffset now = DateTimeOffset.UtcNow;
+        Guid userId = _currentUserService.UserId;
 
         foreach (var entry in context.ChangeTracker.Entries<BaseEntity>())
         {
@@ -44,23 +54,22 @@ public class AuditInterceptor : SaveChangesInterceptor
                 entry.Entity.CreatedDate = now;
                 entry.Entity.UpdatedDate = null;
                 entry.Entity.DeletedDate = null;
-                entry.Entity.CreatedBy = Guid.Parse(...);
-                entry.Entity.UpdatedBy = Guid.Parse(...);
-                entry.Entity.DeletedBy = Guid.Parse(...);
+                entry.Entity.CreatedBy = userId;
                 entry.Entity.RowVersion = Guid.NewGuid();
             }
             else if (entry.State == EntityState.Modified)
             {
                 entry.Entity.UpdatedDate = now;
-                entry.Entity.DeletedDate = null;
-                entry.Entity.UpdatedBy = Guid.Parse(...);
+                entry.Entity.UpdatedBy = userId;
                 entry.Entity.RowVersion = Guid.NewGuid();
             }
             else if (entry.State == EntityState.Deleted)
             {
+                entry.State = EntityState.Modified;
+                
                 entry.Entity.DeletedDate = now;
-                entry.Entity.UpdatedDate = now;
-                entry.Entity.UpdatedBy = Guid.Parse(...);
+                entry.Entity.IsDeleted = true;
+                entry.Entity.DeletedBy = userId;
             }
         }
     }
