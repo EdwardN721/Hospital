@@ -1,4 +1,7 @@
+using System.Reflection;
+using FluentValidation;
 using Hospital.API.Middleware;
+using Hospital.Application.Interfaces;
 using Hospital.Application.Services;
 using Hospital.Domain.Interfaces;
 
@@ -17,6 +20,17 @@ public static class ApiServiceExtensions
 
         // Requerido para que el framework formatee correctamente las respuestas HTTP de error
         services.AddProblemDetails();
+
+        return services;
+    }
+
+    public static IServiceCollection AddValidatorConfig(this IServiceCollection services)
+    {
+        // Escanea este ensamblado y registra todas las clases que hereden de AbstractValidator
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        // Registramos nuestros servicios de negocio
+        services.AddScoped<IPatientService, PatientService>();
 
         return services;
     }
