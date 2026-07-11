@@ -41,6 +41,14 @@ public class GlobalExceptionHandler : IExceptionHandler
                 problemDetails.Detail = businessRuleException.Message;
                 break;
 
+            case AppValidationException validationException:
+                problemDetails.Status = StatusCodes.Status400BadRequest;
+                problemDetails.Title = "Error de validación de datos.";
+                problemDetails.Detail = validationException.Message;
+
+                problemDetails.Extensions["errors"] = validationException.Errors;
+                break;
+
             // --- Excepciones de Base de Datos (Entity Framework Core) ---
             case DbUpdateConcurrencyException concurrencyEx:
                 problemDetails.Status = StatusCodes.Status409Conflict;

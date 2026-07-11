@@ -2,7 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Hospital.Domain.Interfaces;
 
-namespace Hospital.Application.Services;
+namespace Hospital.Api.Identity;
 
 public class CurrentUserService : ICurrentUserService
 {
