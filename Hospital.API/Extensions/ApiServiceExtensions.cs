@@ -1,9 +1,6 @@
-using System.Reflection;
 using Asp.Versioning;
-using FluentValidation;
+using Hospital.Api.Identity;
 using Hospital.API.Middleware;
-using Hospital.Application.Interfaces;
-using Hospital.Application.Services;
 using Hospital.Domain.Interfaces;
 
 namespace Hospital.API.Extensions;

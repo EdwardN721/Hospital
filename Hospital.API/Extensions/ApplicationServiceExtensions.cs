@@ -10,7 +10,7 @@ public static class ApplicationServiceExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         // Agregar Fluent Validations -> Validadores
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssembly(typeof(ApplicationServiceExtensions).Assembly);
 
         // Servicies
         services.AddScoped<IPatientService, PatientService>();
