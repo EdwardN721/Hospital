@@ -1,4 +1,5 @@
 using System.Reflection;
+using Asp.Versioning;
 using FluentValidation;
 using Hospital.API.Middleware;
 using Hospital.Application.Interfaces;
@@ -15,7 +16,7 @@ public static class ApiServiceExtensions
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-        // 2. Manejo Global de Excepciones (.NET 8/10)         
+        // 2. Manejo Global de Excepciones         
         services.AddExceptionHandler<GlobalExceptionHandler>();
 
         // Requerido para que el framework formatee correctamente las respuestas HTTP de error
@@ -24,13 +25,22 @@ public static class ApiServiceExtensions
         return services;
     }
 
-    public static IServiceCollection AddValidatorConfig(this IServiceCollection services)
+    public static IServiceCollection AddScalarConfiguration(this IServiceCollection services)
     {
-        // Escanea este ensamblado y registra todas las clases que hereden de AbstractValidator
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+        })
+        .AddMvc()
+        .AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+        });
 
-        // Registramos nuestros servicios de negocio
-        services.AddScoped<IPatientService, PatientService>();
+        services.AddOpenApi();
 
         return services;
     }

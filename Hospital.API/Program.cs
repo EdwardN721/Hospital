@@ -1,30 +1,43 @@
 using Hospital.API.Extensions;
+using Hospital.Application.Extensions;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Servicios de la API
+// Registrar dependencias
+builder.Services.AddControllers();
+
+// Agregar configuracion de excepciones y contexto de las peticiones web
 builder.Services.AddApiServices();
+
+// Agregar configuracion de Scalar
+builder.Services.AddScalarConfiguration();
+
+// Agregar servicios y validadores
+builder.Services.AddApplicationServices();
 
 // Servicios de Infraestructura
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
-// Agregar Swagger
-
 
 var app = builder.Build();
 
 // CONFIGURACIÓN DEL PIPELINE HTTP 
 
-// Inyectamos el middleware global de excepciones ANTES que cualquier otra cosa
+// Inyectamos el middleware global de excepciones
 app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
-    // app.UseSwagger();
-    // app.UseSwaggerUI();
+    app.MapOpenApi();
+
+    app.MapScalarApiReference(options =>
+    {
+        options.WithTitle("Hospital API v1")
+            .WithTheme(ScalarTheme.Mars)
+            .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+    });
 }
 
 app.UseHttpsRedirection();
