@@ -4,7 +4,6 @@ namespace Hospital.Domain.Models.Core;
 
 public class Patient :  Person
 {
-    public Guid PatientId { get; set; }
     public string? BloodType { get; set; }
     public string? EmergencyContactName { get; set; }
     public string? EmergencyContactPhone { get; set; }

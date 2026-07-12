@@ -10,8 +10,7 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
     {
         builder.ToTable("patients", "core");
 
-        builder.Property(p => p.PatientId).HasDefaultValueSql("gen_random_uuid()");
-        builder.HasKey(p => p.PatientId);
+        builder.Property(p => p.PersonId).HasColumnName("patientid");
 
         builder.Property(p => p.BloodType).HasMaxLength(5);
         builder.Property(p => p.EmergencyContactName).HasMaxLength(100);

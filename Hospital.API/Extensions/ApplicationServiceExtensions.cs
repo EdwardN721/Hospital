@@ -1,5 +1,6 @@
 using System.Reflection;
 using FluentValidation;
+using Hospital.Application.DTOs.Requests.Patients;
 using Hospital.Application.Interfaces;
 using Hospital.Application.Services;
 
@@ -10,7 +11,7 @@ public static class ApplicationServiceExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         // Agregar Fluent Validations -> Validadores
-        services.AddValidatorsFromAssembly(typeof(ApplicationServiceExtensions).Assembly);
+        services.AddValidatorsFromAssembly(typeof(CreatePatientRequest).Assembly);
 
         // Servicies
         services.AddScoped<IPatientService, PatientService>();

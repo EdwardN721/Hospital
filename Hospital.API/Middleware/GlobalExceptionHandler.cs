@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Hospital.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Diagnostics;
+using Npgsql;
 
 namespace Hospital.API.Middleware;
 
@@ -63,6 +64,23 @@ public class GlobalExceptionHandler : IExceptionHandler
                     // En base de datos, solemos ocultar el error real en producción por seguridad
                     ? dbUpdateEx.InnerException?.Message ?? dbUpdateEx.Message
                     : "Ocurrió un problema al intentar guardar los cambios en la base de datos.";
+                break;
+
+            // --- Excepciones de Postgres ---
+            case PostgresException pgEx when pgEx.SqlState == "42501":
+                problemDetails.Status = StatusCodes.Status500InternalServerError;
+                problemDetails.Title = "Error de configuración de Base de Datos";
+                // En desarrollo mostramos el error real, en producción lo ocultamos por seguridad
+                problemDetails.Detail = _env.IsDevelopment()
+                    ? $"Faltan permisos en la base de datos: {pgEx.MessageText}"
+                    : "Ocurrió un error interno al intentar acceder a los datos.";
+                break;
+
+            // Para cualquier otro error general de base de datos
+            case PostgresException pgEx:
+                problemDetails.Status = StatusCodes.Status500InternalServerError;
+                problemDetails.Title = "Error de Base de Datos";
+                problemDetails.Detail = _env.IsDevelopment() ? pgEx.MessageText : "Error interno de DB.";
                 break;
 
             // --- Excepciones Generales ---

@@ -9,7 +9,7 @@ public static class PatientsMapper
     public static PatientResponse MapToDto(this Patient patient)
     {
         return new PatientResponse(
-            patient.PatientId,
+            patient.PersonId,
             patient.FirstName,
             patient.LastName,
             patient.DateOfBirth,
@@ -36,6 +36,18 @@ public static class PatientsMapper
             EmergencyContactName = request.EmergencyContactName,
             EmergencyContactPhone = request.EmergencyContactPhone
         };
+    }
+
+    public static void UpdateEntity(this Patient paciente, UpdatePatientRequest pacienteRequest)
+    {
+        paciente.FirstName = pacienteRequest.FirstName;
+        paciente.LastName = pacienteRequest.LastName;
+        paciente.DateOfBirth = pacienteRequest.DateOfBirth;
+        paciente.Gender = pacienteRequest.Gender;
+        paciente.Email = pacienteRequest.Email;
+        paciente.BloodType = pacienteRequest.BloodType;
+        paciente.EmergencyContactName = pacienteRequest.EmergencyContactName;
+        paciente.EmergencyContactPhone = pacienteRequest.EmergencyContactPhone;
     }
 
     public static IEnumerable<PatientResponse> MapToDto(this IEnumerable<Patient>? patients)

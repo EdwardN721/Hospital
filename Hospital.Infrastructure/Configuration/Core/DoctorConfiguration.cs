@@ -10,8 +10,7 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
     {
         builder.ToTable("doctors", "core");
 
-        builder.Property(p => p.DoctorId).HasDefaultValueSql("gen_random_uuid()");
-        builder.HasKey(d => d.DoctorId);
+        builder.Property(d => d.PersonId).HasColumnName("doctorid");
 
         builder.Property(d => d.MedicalLicense).HasMaxLength(50).IsRequired();
         builder.HasIndex(d => d.MedicalLicense).IsUnique();

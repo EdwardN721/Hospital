@@ -4,6 +4,15 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Agregar conexión
+builder.Services.AddDbPostgres(builder.Configuration);
+
+// Agregar interceptores
+builder.Services.AddInterceptors();
+
+// Agregar repositorios
+builder.Services.AddRepositories();
+
 // Registrar dependencias
 builder.Services.AddControllers();
 
@@ -15,9 +24,6 @@ builder.Services.AddScalarConfiguration();
 
 // Agregar servicios y validadores
 builder.Services.AddApplicationServices();
-
-// Servicios de Infraestructura
-builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 

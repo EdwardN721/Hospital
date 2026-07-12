@@ -8,25 +8,30 @@ namespace Hospital.API.Extensions;
 
 public static class InfrastructureServiceExtensions
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInterceptors(this IServiceCollection services)
     {
-        // Registrar el interceptor de auditoria
         services.AddScoped<AuditInterceptor>();
 
-        // Configurar DbContext PostgreSQL
-        services.AddDbContext<AppDbContext>((sp, options) =>
-        {
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+        return services;
+    }
 
-            // Resolvemos el interceptor desde el contenedor para que pueda usar ICurrentUserService internamente
-            var auditInterceptor = sp.GetRequiredService<AuditInterceptor>();
-            options.AddInterceptors(auditInterceptor);
+    public static IServiceCollection AddDbPostgres(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<AppDbContext>((serviceProvider, options) =>
+        {
+            var interceptorAudit = serviceProvider.GetService<AuditInterceptor>()!;
+
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+                .AddInterceptors(interceptorAudit);
         });
 
-        // Registrar Repositorio Genérico y Unit of Work
-        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        return services;
+    }
 
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        
         return services;
     }
 }
