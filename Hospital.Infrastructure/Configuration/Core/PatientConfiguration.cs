@@ -10,8 +10,6 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
     {
         builder.ToTable("patients", "core");
 
-        builder.Property(p => p.PersonId).HasColumnName("patientid");
-
         builder.Property(p => p.BloodType).HasMaxLength(5);
         builder.Property(p => p.EmergencyContactName).HasMaxLength(100);
         builder.Property(p => p.EmergencyContactPhone).HasMaxLength(20);

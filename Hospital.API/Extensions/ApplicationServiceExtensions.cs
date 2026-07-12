@@ -15,7 +15,7 @@ public static class ApplicationServiceExtensions
 
         // Servicies
         services.AddScoped<IPatientService, PatientService>();
-        
+        services.AddScoped<ISpecialtyService, SpecialtyService>();
 
         return services;
     }

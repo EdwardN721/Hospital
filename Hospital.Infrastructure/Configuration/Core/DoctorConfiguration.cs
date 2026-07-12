@@ -9,9 +9,7 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
     public void Configure(EntityTypeBuilder<Doctor> builder)
     {
         builder.ToTable("doctors", "core");
-
-        builder.Property(d => d.PersonId).HasColumnName("doctorid");
-
+        
         builder.Property(d => d.MedicalLicense).HasMaxLength(50).IsRequired();
         builder.HasIndex(d => d.MedicalLicense).IsUnique();
     }

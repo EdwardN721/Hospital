@@ -22,6 +22,7 @@ public static class InfrastructureServiceExtensions
             var interceptorAudit = serviceProvider.GetService<AuditInterceptor>()!;
 
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+                .UseLowerCaseNamingConvention()
                 .AddInterceptors(interceptorAudit);
         });
 
