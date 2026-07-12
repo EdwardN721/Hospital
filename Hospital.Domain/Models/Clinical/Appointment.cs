@@ -7,8 +7,8 @@ public class Appointment : BaseEntity
     public Guid AppointmentId { get; set; }
     public Guid PatientId { get; set; }
     public Guid DoctorId { get; set; }
-    public DateTime ScheduledTime { get; set; }
-    public string Status { get; set; } = null!; // Pending, Confirmed, Completed, Cancelled
+    public DateTimeOffset ScheduledTime { get; set; }
+    public string Status { get; set; } = null!;
     public string Reason { get; set; } = null!;
 
     public Patient Patient { get; set; } = null!;
