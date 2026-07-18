@@ -16,6 +16,15 @@ public static class ApplicationServiceExtensions
         // Servicies
         services.AddScoped<IPatientService, PatientService>();
         services.AddScoped<ISpecialtyService, SpecialtyService>();
+        services.AddScoped<IPersonService, PersonService>();
+        services.AddScoped<IDoctorService, DoctorService>();
+        services.AddScoped<IAppointmentService, AppointmentService>();
+        services.AddScoped<IRoomService, RoomService>();
+        services.AddScoped<IBedService, BedService>();
+        services.AddScoped<IFloorService, FloorService>();
+        services.AddScoped<IPrescriptionService, PrescriptionService>();
+        services.AddScoped<IAdmissionService, AdmissionService>();
+        services.AddScoped<IInvoiceService, InvoiceService>();
 
         return services;
     }

@@ -1,11 +1,10 @@
-namespace Hospital.Application.DTOs.Responses.Doctors;
+namespace Hospital.Application.DTOs.Requests.Doctors;
 
-public record DoctorResponse(
-    Guid PersonId, 
+public record UpdateDoctorRequest(
     string FirstName,
     string LastName,
     DateTime DateOfBirth,
-    string DocumentId,
+    char Gender,
     string? Email,
     Guid SpecialtyId,
     string MedicalLicense
