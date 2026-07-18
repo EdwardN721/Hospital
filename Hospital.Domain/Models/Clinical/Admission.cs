@@ -8,8 +8,8 @@ public class Admission : BaseEntity
     public Guid PatientId { get; set; }
     public Guid BedId { get; set; }
     public Guid DoctorId { get; set; }
-    public DateTime AdmissionDate { get; set; } = DateTime.UtcNow;
-    public DateTime? DischargeDate { get; set; }
+    public DateTimeOffset AdmissionDate { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset? DischargeDate { get; set; }
     public string Reason { get; set; } = null!;
 
     public Patient Patient { get; set; } = null!;
